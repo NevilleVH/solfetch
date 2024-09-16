@@ -1,16 +1,23 @@
 import * as cdk from 'aws-cdk-lib';
 import { Construct } from 'constructs';
-// import * as sqs from 'aws-cdk-lib/aws-sqs';
+
+import {aws_events as events, aws_events_targets as targets,aws_lambda as lambda, aws_lambda_nodejs} from "aws-cdk-lib"
+
 
 export class SolfetchStack extends cdk.Stack {
   constructor(scope: Construct, id: string, props?: cdk.StackProps) {
     super(scope, id, props);
 
-    // The code that defines your stack goes here
+    const fetchFunction = new aws_lambda_nodejs.NodejsFunction(this, 'FetchFunction', {
+      runtime: lambda.Runtime.NODEJS_20_X,
+      entry: "lambda/fetch.ts", 
+      functionName: "FetchFunction", 
+    })
+    
+    const rule = new events.Rule(this, "Rule", {
+      schedule: events.Schedule.cron({minute: "0"}), // Run every hour
+    });
 
-    // example resource
-    // const queue = new sqs.Queue(this, 'SolfetchQueue', {
-    //   visibilityTimeout: cdk.Duration.seconds(300)
-    // });
+    rule.addTarget(new targets.LambdaFunction(fetchFunction))
   }
 }
