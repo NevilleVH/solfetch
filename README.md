@@ -4,7 +4,7 @@ Start the database container:
 `docker run --name db -d -p 5431:5432 db`
 
 Install dependencies:
-`npm init`
+`npm install`
 
 Compile and run locally (requires CDK and SAM CLI tools):
 `cdk synth`
