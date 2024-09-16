@@ -61,6 +61,7 @@ export const  handler: Handler = async (event) => {
     const client = await pool.connect()
     try {
         for (const row of data.data) {
+            row.pv_power_rooftop *= 1000 // Convert the power from kW to W
             await insertRow(client, row)
         }
     } finally {
