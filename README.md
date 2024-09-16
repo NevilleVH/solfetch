@@ -1,14 +1,20 @@
-# Welcome to your CDK TypeScript project
+# Instructions
+Start the database container:
+`docker build -t db .`  
+`docker run --name db -d -p 5431:5432 db`
 
-This is a blank project for CDK development with TypeScript.
+Install dependencies:
+`npm init`
 
-The `cdk.json` file tells the CDK Toolkit how to execute your app.
+Compile and run locally (requires CDK and SAM CLI tools):
+`cdk synth`
+`sam local invoke FetchFunction --no-event -t ./cdk.out/SolfetchStack.template.json`
 
-## Useful commands
-
-* `npm run build`   compile typescript to js
-* `npm run watch`   watch for changes and compile
-* `npm run test`    perform the jest unit tests
-* `npx cdk deploy`  deploy this stack to your default AWS account/region
-* `npx cdk diff`    compare deployed stack with current state
-* `npx cdk synth`   emits the synthesized CloudFormation template
+# Notes
+Unfortunately, due to time constraints, there are a few caveats:
+* Error cases for when irradiance data is not available
+* Local testing often times out during the request
+* This uses a local database due to AWS RDS being a paid service
+* The lambda is not deployed to AWS for the above reason
+* Lack of unit tests
+* Database config should be read from the environment/using secrets
