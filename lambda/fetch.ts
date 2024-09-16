@@ -50,7 +50,11 @@ export const  handler: Handler = async (event) => {
     // Only create the pool once across lambda invocations
     if (!pool) {
         pool = new pg.Pool({
-            max: 1
+            max: 1,
+            database: "solink",
+            port: 5431,
+            user: "user",
+            password: "password"
         })
     }
 
@@ -62,9 +66,6 @@ export const  handler: Handler = async (event) => {
     } finally {
         client.release(true)
     }
-    
-
-    data.data
 }
 
 function insertRow(client: pg.PoolClient, data: WeatherData) {
